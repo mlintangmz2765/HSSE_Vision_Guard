@@ -1,159 +1,66 @@
 # PANDUAN MENJALANKAN HSSE VISION GUARD DI GOOGLE COLAB
 
+Dokumen ini merupakan panduan resmi untuk menjalankan purwarupa sistem **HSSE Vision Guard** menggunakan lingkungan komputasi Google Colab. Seluruh modul aplikasi, termasuk antarmuka Streamlit dan model deteksi YOLOv8, telah dipaketkan ke dalam satu berkas *notebook* mandiri (*self-contained notebook*) untuk memudahkan proses pengujian dan evaluasi tanpa perlu konfigurasi lokal tambahan.
+
 ## Prasyarat
 - Akun Google (untuk akses Google Colab)
 - Koneksi internet stabil
-- Browser (Chrome/Firefox direkomendasikan)
+- Browser modern (Chrome/Firefox direkomendasikan)
 
 ---
 
-## LANGKAH 1: Persiapan File
+## LANGKAH 1: Mengunggah Notebook ke Colab
 
-### Opsi A: Upload dari Komputer Lokal
-1. Buka https://colab.research.google.com/
-2. Klik "Upload" > Pilih file `app.py`
-3. Upload juga file `requirements.txt`
-
-### Opsi B: Dari Google Drive
-1. Upload file ke Google Drive
-2. Buka Google Colab
-3. Klik folder icon di kiri > Mount Drive > Pilih file
+1. Buka [Google Colab](https://colab.research.google.com/) melalui browser Anda.
+2. Pada jendela *popup* awal, pilih *tab* **"Upload"**.
+3. Pilih dan unggah berkas `HSSE_Vision_Guard_Colab.ipynb` dari repositori ini ke dalam platform.
 
 ---
 
-## LANGKAH 2: Install Dependencies
+## LANGKAH 2: Inisialisasi Sistem (Eksekusi Cell)
 
-Buat cell baru dan jalankan:
+Berkas `.ipynb` ini dirancang untuk melakukan *deployment* secara otomatis. Proses inisialisasi akan mengunduh dependensi pustaka, memuat model AI praletih (*pre-trained* YOLOv8 *nano*), dan menyusun fail inti aplikasi (`app.py`) ke dalam mesin virtual Colab secara dinamis.
 
-```python
-# Install semua dependencies
-!pip install -q streamlit ultralytics torch torchvision pandas numpy plotly matplotlib opencv-python Pillow scikit-learn
-```
-
-Tunggu sampai install selesai (~2-3 menit)
+1. Setelah berkas terbuka, jalankan seluruh perintah eksekusi dengan mengklik menu **Runtime > Run all** (Jalankan semua) pada bilah navigasi atas.
+2. Tunggu sekitar 2-3 menit hingga proses instalasi modul (seperti Streamlit, Ultralytics, dan Plotly) selesai secara keseluruhan. 
+3. Pastikan proses berjalan hingga tuntas tanpa memunculkan pesan galat (*error*) pada hasil keluaran *cell* pertama.
 
 ---
 
-## LANGKAH 3: Load YOLOv8 Model
+## LANGKAH 3: Mengakses Antarmuka Aplikasi (Dashboard)
 
-Buat cell baru:
+Aplikasi *HSSE Vision Guard* dijalankan pada *localhost* server Colab. Untuk menayangkan antarmuka (*User Interface*) aplikasi ke peramban (browser) Anda, diperlukan pembuatan jalur akses publik menggunakan *Localtunnel*.
 
-```python
-# Import library
-from ultralytics import YOLO
-
-# Download dan load model YOLOv8 nano
-# Model ini pre-trained untuk deteksi objek
-print("📥 Downloading YOLOv8 nano model...")
-model = YOLO('yolov8n.pt')
-print("✅ Model berhasil dimuat!")
-```
-
----
-
-## LANGKAH 4: Jalankan Streamlit App
-
-Buat cell baru:
-
-```python
-# Jalankan Streamlit
-# App akan berjalan di localhost:8501
-!streamlit run app.py --server.port 8501 &
-```
-
-Tekan Enter setelah menjalankan cell. Biarkan proses berjalan.
+1. Buka menu Colab di bagian atas: **Runtime > Manage Sessions** (Kelola Sesi).
+2. Pada daftar sesi yang aktif, klik tombol **"New terminal"** (Terminal baru).
+3. Di dalam terminal yang terbuka pada panel bawah, ketik perintah berikut dan tekan *Enter*:
+   ```bash
+   npx localtunnel --port 8501
+   ```
+4. Terminal akan memproses jalur (*tunnel*) dan menampilkan sebuah tautan publik (contoh: `https://some-random-words.loca.lt`). Klik tautan tersebut untuk membukanya di *tab* baru.
+5. **Verifikasi Keamanan:** Layanan Localtunnel mewajibkan pengguna untuk memasukkan *Endpoint IP* server. 
+   - Untuk mengetahui IP publik mesin Colab Anda, ketik perintah `curl ipv4.icanhazip.com` di dalam terminal Colab yang sama (tekan ikon **+** untuk menambah tab terminal jika perlu). 
+   - Salin angka IP yang dimunculkan, tempel (*paste*) ke kolom input di halaman Localtunnel, dan tekan **Submit**.
+6. Dasbor interaktif *HSSE Vision Guard* akan langsung dimuat.
 
 ---
 
-## LANGKAH 5: Akses Aplikasi via LocalTunnel
+## PANDUAN PENGUJIAN MODUL
 
-### Cara 1: LocalTunnel (Recommended)
-1. Buka menu Runtime > Manage Sessions
-2. Klik "New terminal"
-3. Ketik perintah berikut:
+Setelah sistem berhasil diakses secara penuh, Anda dapat menguji seluruh fungsionalitas purwarupa melalui bilah navigasi kiri (*sidebar*):
 
-```bash
-!npx localtunnel --port 8501
-```
-
-4. Akan muncul link seperti: `https://some-random-words.loca.lt`
-5. Buka link tersebut di browser baru
-6. **PENTING:** Masukkan IP address Cloudflare/Colab saat diminta (ketik IP publik)
-
-### Cara 2: Ngrok (Lebih Stabil)
-1. Daftar di https://ngrok.com/ (GRATIS)
-2. Copy authtoken dari dashboard
-3. Buat cell baru:
-
-```python
-# Setup ngrok
-!pip install pyngrok
-!ngrok authtoken YOUR_NGROK_AUTHTOKEN
-
-# Jalankan streamlit
-!streamlit run app.py --server.port 8501 &
-
-# Buat tunnel
-from pyngrok import ngrok
-public_url = ngrok.connect(8501)
-print(f"🔗 Akses app di: {public_url}")
-```
+1. **Dashboard Overview:** Menampilkan analitik metrik keselamatan terpadu dan indikator insiden.
+2. **APD Detector:** Modul evaluasi *Computer Vision*. Unggah (*upload*) gambar pekerja lapangan untuk menguji tingkat kepercayaan (*confidence*) deteksi model dalam mengenali atribut keselamatan.
+3. **Risk Predictor:** Modul simulasi kalkulasi risiko berbasis input dinamis (usia alat, skor pemeliharaan, cuaca).
+4. **UAV Simulator:** Tinjauan simulasi *waypoint* inspeksi fasilitas menggunakan kapabilitas nirawak.
 
 ---
 
-## LANGKAH 6: Upload Gambar untuk Testing
+## PENYELESAIAN MASALAH (TROUBLESHOOTING)
 
-Setelah app berjalan:
-
-1. Buka tab aplikasi di browser
-2. Pilih modul **"APD Detector"**
-3. Pilih **"Upload Gambar"**
-4. Upload gambar pekerja (bisa download dari internet)
+- **Aplikasi Terputus (Timeout):** Jika jalur Localtunnel terputus secara *idle*, hentikan proses di terminal dengan kombinasi `Ctrl+C`, kemudian jalankan kembali perintah `npx localtunnel --port 8501`.
+- **IP Address Ditolak:** Pastikan IP yang disubmit adalah IP publik server mesin Colab (melalui perintah `curl`), BUKAN IP jaringan internet lokal Anda.
+- **ModuleNotFoundError:** Apabila terindikasi kegagalan pemuatan pustaka pihak ketiga, ulangi proses inisialisasi dengan mengklik **Run All** sekali lagi.
 
 ---
-
-## TROUBLESHOOTING
-
-### Error: "Module not found"
-Jalankan ulang cell install dependencies
-
-### Error: "Connection refused"
-Pastikan streamlit sudah berjalan. Cek di Runtime > Manage Sessions
-
-### App tidak muncul
-Refresh browser atau buka di tab baru dengan link localtunnel/ngrok
-
-### Model YOLOv8 error
-Tambahkan cell untuk re-download:
-```python
-import os
-os.remove('yolov8n.pt')  # Hapus model lama
-model = YOLO('yolov8n.pt')  # Download ulang
-```
-
----
-
-## HASIL YANG DIHARAPKAN
-
-Setelah berhasil:
-1. ✅ Dashboard HSSE Vision Guard muncul
-2. ✅ Bisa navigasi antar modul (Dashboard, APD Detector, dll)
-3. ✅ Bisa upload gambar untuk deteksi APD
-4. ✅ Safety Dashboard menampilkan grafik interaktif
-5. ✅ Risk Predictor menghitung skor risikos
-
----
-
-## ESTIMASI WAKTU
-
-| Langkah | Waktu |
-|---------|-------|
-| Upload file | 1-2 menit |
-| Install dependencies | 3-5 menit |
-| Load model | 1-2 menit |
-| Setup tunnel | 2-3 menit |
-| **Total** | **~10 menit** |
-
----
-
-Selamat mencoba! 🚀
+*Dikembangkan untuk HSSE Innovation Challenge 2026.*

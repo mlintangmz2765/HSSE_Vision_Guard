@@ -5,8 +5,8 @@ HSSE Vision Guard: AI-Powered Safety Monitoring System
 Integrasi Digital Twin, AI, dan UAV untuk Monitoring Keselamatan Kerja di Industri Energi
 HSSE Innovation Challenge 2026
 
-Author: [Nama Lengkap]
-University: [Nama Universitas]
+Author: M Lintang Maulana Zulfan
+University: Universitas Gadjah Mada
 """
 
 import streamlit as st
@@ -775,7 +775,7 @@ elif "Documentation" in page:
         st.download_button(
             "📄 Download KTI PDF",
             data="KTI document content placeholder",
-            file_name="NamaLengkap_Universitas.pdf",
+            file_name="MLintangMZulfan_UniversitasGadjahMada.pdf",
             mime="application/pdf"
         )
     with col2:
