@@ -29,19 +29,19 @@ Berkas `.ipynb` ini dirancang untuk melakukan *deployment* secara otomatis. Pros
 
 ## LANGKAH 3: Mengakses Antarmuka Aplikasi (Dashboard)
 
-Aplikasi *HSSE Vision Guard* dijalankan pada *localhost* server Colab. Untuk menayangkan antarmuka (*User Interface*) aplikasi ke peramban (browser) Anda, diperlukan pembuatan jalur akses publik menggunakan *Localtunnel*.
+Aplikasi *HSSE Vision Guard* dijalankan pada *localhost* server Colab. Untuk menayangkan antarmuka (*User Interface*) aplikasi ke peramban (browser) Anda, diperlukan pembuatan jalur akses publik. Mengingat *Localtunnel* sering mengalami kendala *timeout*, kami merekomendasikan penggunaan **Cloudflare Quick Tunnels** yang jauh lebih stabil dan tidak memerlukan kata sandi / IP verifikasi.
 
 1. Buka menu Colab di bagian atas: **Runtime > Manage Sessions** (Kelola Sesi).
 2. Pada daftar sesi yang aktif, klik tombol **"New terminal"** (Terminal baru).
-3. Di dalam terminal yang terbuka pada panel bawah, ketik perintah berikut dan tekan *Enter*:
+3. Di dalam terminal yang terbuka pada panel bawah, salin (*copy*) dan tempel (*paste*) keempat baris perintah berikut sekaligus, lalu tekan *Enter*:
    ```bash
-   npx localtunnel --port 8501
+   nohup streamlit run app.py &
+   wget -q -c -nc https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64
+   chmod +x cloudflared-linux-amd64
+   ./cloudflared-linux-amd64 tunnel --url http://localhost:8501
    ```
-4. Terminal akan memproses jalur (*tunnel*) dan menampilkan sebuah tautan publik (contoh: `https://some-random-words.loca.lt`). Klik tautan tersebut untuk membukanya di *tab* baru.
-5. **Verifikasi Keamanan:** Layanan Localtunnel mewajibkan pengguna untuk memasukkan *Endpoint IP* server. 
-   - Untuk mengetahui IP publik mesin Colab Anda, ketik perintah `curl ipv4.icanhazip.com` di dalam terminal Colab yang sama (tekan ikon **+** untuk menambah tab terminal jika perlu). 
-   - Salin angka IP yang dimunculkan, tempel (*paste*) ke kolom input di halaman Localtunnel, dan tekan **Submit**.
-6. Dasbor interaktif *HSSE Vision Guard* akan langsung dimuat.
+4. Terminal akan memproses jalur (*tunnel*) dan memunculkan log. Cari tautan yang berakhiran **`.trycloudflare.com`** (contoh: `https://some-random-words.trycloudflare.com`).
+5. Klik tautan tersebut untuk membukanya di *tab* baru. Dasbor interaktif *HSSE Vision Guard* akan langsung dimuat dengan cepat!
 
 ---
 
@@ -58,8 +58,8 @@ Setelah sistem berhasil diakses secara penuh, Anda dapat menguji seluruh fungsio
 
 ## PENYELESAIAN MASALAH (TROUBLESHOOTING)
 
-- **Aplikasi Terputus (Timeout):** Jika jalur Localtunnel terputus secara *idle*, hentikan proses di terminal dengan kombinasi `Ctrl+C`, kemudian jalankan kembali perintah `npx localtunnel --port 8501`.
-- **IP Address Ditolak:** Pastikan IP yang disubmit adalah IP publik server mesin Colab (melalui perintah `curl`), BUKAN IP jaringan internet lokal Anda.
+- **Aplikasi Terputus (Timeout):** Jika tautan Cloudflare Anda terputus secara *idle*, hentikan proses di terminal dengan kombinasi `Ctrl+C`, kemudian jalankan kembali perintah `./cloudflared-linux-amd64 tunnel --url http://localhost:8501`.
+- **Tidak Menemukan Link .trycloudflare.com:** Periksa kembali log di terminal Anda. Biasanya tautannya berada di baris berlabel `INF | Registered tunnel connection...`
 - **ModuleNotFoundError:** Apabila terindikasi kegagalan pemuatan pustaka pihak ketiga, ulangi proses inisialisasi dengan mengklik **Run All** sekali lagi.
 
 ---

@@ -115,7 +115,7 @@ def detect_apd(image, model):
         return image, []
 
     # Run detection
-    results = model(image, conf=0.5, verbose=False)
+    results = model(image, conf=0.5, verbose=False, stream=True)
 
     # Parse results
     detections = []
@@ -217,8 +217,7 @@ page = st.sidebar.radio(
      "📊 Safety Analytics",
      "⚠️ Risk Predictor",
      "🚁 UAV Simulator",
-     "📝 KTI Documentation"],
-    format_func=lambda x: x.split('. ')[1]
+     "📝 KTI Documentation"]
 )
 
 st.sidebar.markdown("---")

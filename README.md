@@ -99,56 +99,43 @@ Pengembangan sistem monitoring keselamatan kerja terintegrasi berbasis:
 
 ### 4-Layer Architecture
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│         LAYER 4: Application & Decision Layer               │
-│  ┌───────────┬───────────┬───────────┬───────────────────┐   │
-│  │Dashboard  │Alert Sys  │Decision   │  Reporting        │   │
-│  │           │           │Support    │                   │   │
-│  └───────────┴───────────┴───────────┴───────────────────┘   │
-│  ┌───────────────────────────────────────────────────────┐  │
-│  │              Training Module (VR/AR)                    │  │
-│  └───────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
-                            ▲
-                            │
-┌─────────────────────────────────────────────────────────────┐
-│              LAYER 3: Digital Twin & AI Layer                │
-│  ┌─────────────────────────┐  ┌─────────────────────────┐   │
-│  │   Digital Twin Engine  │  │    AI Analytics Engine  │   │
-│  │  • Real-time Sync     │  │  • Machine Learning     │   │
-│  │  • Simulation         │  │  • Deep Learning (YOLO)│   │
-│  │  • Risk Modeling     │  │  • NLP Analysis         │   │
-│  └─────────────────────────┘  └─────────────────────────┘   │
-│  ┌───────────────────────────────────────────────────────┐   │
-│  │              Knowledge Base                             │   │
-│  │       Incident DB | Best Practices | Procedures        │   │
-│  └───────────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────┘
-                            ▲
-                            │
-┌─────────────────────────────────────────────────────────────┐
-│                 LAYER 2: Connectivity Layer                 │
-│  ┌─────────┐ ┌────────────┐ ┌─────────┐ ┌──────────────┐   │
-│  │  5G/IoT │ │Edge Comput.│ │  Cloud  │ │ Cybersecurity│   │
-│  └─────────┘ └────────────┘ └─────────┘ └──────────────┘   │
-│  ┌───────────────────────────────────────────────────────┐  │
-│  │           Blockchain (Data Integrity)                   │  │
-│  └───────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
-                            ▲
-                            │
-┌─────────────────────────────────────────────────────────────┐
-│                    LAYER 1: Physical Layer                 │
-│  ┌──────────────┐ ┌──────────────┐ ┌──────────────────┐   │
-│  │Sensor Network│ │  UAV Fleet   │ │ Wearable Devices │   │
-│  │Temp/Humidity │ │4K/Thermal/   │ │Smart Helmet/Vest │   │
-│  │Gas Sensors   │ │LiDAR         │ │Biosensor         │   │
-│  └──────────────┘ └──────────────┘ └──────────────────┘   │
-│  ┌───────────────────────────────────────────────────────┐  │
-│  │               CCTV + Video Analytics                   │  │
-│  └───────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    subgraph L4["LAYER 4: Application & Decision Layer"]
+        D["Dashboard"]
+        AS["Alert System"]
+        DS["Decision Support"]
+        R["Reporting"]
+        TM["Training Module (VR/AR)"]
+    end
+
+    subgraph L3["LAYER 3: Digital Twin & AI Layer"]
+        DT["Digital Twin Engine<br>• Real-time Sync<br>• Simulation<br>• Risk Modeling"]
+        AI["AI Analytics Engine<br>• Machine Learning<br>• Deep Learning (YOLO)<br>• NLP Analysis"]
+        KB["Knowledge Base<br>Incident DB | Best Practices | Procedures"]
+    end
+
+    subgraph L2["LAYER 2: Connectivity Layer"]
+        direction LR
+        N["5G/IoT"] --- EC["Edge Computing"] --- C["Cloud"] --- CS["Cybersecurity"]
+        BC["Blockchain (Data Integrity)"]
+    end
+
+    subgraph L1["LAYER 1: Physical Layer"]
+        SN["Sensor Network<br>Temp/Humidity/Gas"]
+        UAV["UAV Fleet<br>4K/Thermal/LiDAR"]
+        WD["Wearable Devices<br>Smart Helmet/Vest"]
+        CCTV["CCTV + Video Analytics"]
+    end
+
+    L1 --> L2
+    L2 --> L3
+    L3 --> L4
+    
+    style L4 fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,color:#000
+    style L3 fill:#fff3e0,stroke:#ef6c00,stroke-width:2px,color:#000
+    style L2 fill:#e8eaf6,stroke:#3f51b5,stroke-width:2px,color:#000
+    style L1 fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#000
 ```
 
 ---
@@ -253,67 +240,34 @@ HSSE_Vision_Guard/
 ## 🎥 Screenshots
 
 ### Dashboard Overview
-```
-┌─────────────────────────────────────────────────────────────┐
-│  HSSE Vision Guard                                          │
-│  ┌────────┬────────┬────────┬────────┐                    │
-│  │12 Zones│347 Work│ 87%    │ 3 Open │                    │
-│  │  87    │  ers   │Safety  │ Alerts │                    │
-│  └────────┴────────┴────────┴────────┘                    │
-│                                                             │
-│  📈 Incident Trend (12 Months)                             │
-│  ┌─────────────────────────────────────────────┐           │
-│  │    ╭╮                                        │           │
-│  │ ╭──╯╰──╮         ╭╮                           │           │
-│  │╭╯     ╰╮     ╭──╯╰──╮                         │           │
-│  │╯       ╰─────╯      ╰─────╮     ╭╮            │           │
-│  │                             ╰─────╯╰──╮         │           │
-│  └─────────────────────────────────────────────┘           │
-│   Jun Jul Aug Sep Oct Nov Dec Jan Feb Mar Apr May           │
-│                                                             │
-│  🗺️ Zone Safety Overview                                   │
-│  ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐    │
-│  │ 92% 🟢│ │ 88% 🟢│ │ 95% 🟢│ │ 78% 🟡│ │ 85% 🟢│    │
-│  └────────┘ └────────┘ └────────┘ └────────┘ └────────┘    │
-└─────────────────────────────────────────────────────────────┘
-```
+
+![Dashboard Overview](screenshots/dashboard.png)
 
 ### APD Detector
-```
-┌─────────────────────────────────────────────────────────────┐
-│  🦺 APD DETECTOR                                            │
-│  ┌────────────────────────┬────────────────────────────┐     │
-│  │   INPUT               │   OUTPUT                  │     │
-│  │   [Upload Image]     │   ┌──────────────────┐   │     │
-│  │                      │   │  ┌──┐            │   │     │
-│  │   Drop image here   │   │  │  │Person 92%   │   │     │
-│  │   or click to browse │   │  └──┘            │   │     │
-│  │                      │   │  ┌──┐            │   │     │
-│  │                      │   │  │  │Person 89%  │   │     │
-│  │                      │   │  └──┘            │   │     │
-│  │                      │   └──────────────────┘   │     │
-│  └────────────────────────┴────────────────────────┘     │
-│                                                             │
-│  Persons detected: 2                                       │
-└─────────────────────────────────────────────────────────────┘
-```
+
+![APD Detector](screenshots/apd_detector.png)
+
+### Risk Predictor & UAV Simulator
+
+![Risk Predictor](screenshots/risk_predictor.png)
+![UAV Simulator](screenshots/uav_simulator.png)
 
 ---
 
 ## 🎯 Roadmap
 
-```
-[2026] Phase 1: Pilot Project
-├── APD Detection + Dashboard
-└── Target: 1 PT Pertamina facility
-
-[2027] Phase 2: Expansion
-├── Risk Predictor + UAV Integration
-└── Target: 5 facilities
-
-[2028+] Phase 3: Enterprise Integration
-├── Full Digital Twin + AI
-└── Target: Enterprise-wide deployment
+```mermaid
+timeline
+    title Strategi Implementasi HSSE Vision Guard
+    2026 : Phase 1 (Pilot Project)
+         : APD Detection + Dashboard
+         : Target 1 PT Pertamina facility
+    2027 : Phase 2 (Expansion)
+         : Risk Predictor + UAV Integration
+         : Target 5 facilities
+    2028+ : Phase 3 (Enterprise Integration)
+          : Full Digital Twin + AI
+          : Enterprise-wide deployment
 ```
 
 ---
@@ -328,14 +282,7 @@ HSSE_Vision_Guard/
 
 ---
 
-## 📞 Contact
-
-### Competition Contact
-- **Adina:** 0813-7364-8320
-- **Baiti:** 0819-2771-8827
-- **Instagram:** [@pertamina.htc](https://instagram.com/pertamina.htc)
-
-### Author
+## Author
 - **M Lintang Maulana Zulfan**
 - **Universitas Gadjah Mada**
 - GitHub: [@mlintangmz2765](https://github.com/mlintangmz2765)
@@ -348,7 +295,5 @@ MIT License - See [LICENSE](LICENSE) file for details.
 
 ---
 
-```
 Made with ❤️ for HSSE Innovation Challenge 2026
 PT Pertamina HSE Training Center
-```
