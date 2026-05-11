@@ -269,17 +269,6 @@ timeline
           : Full Digital Twin + AI
           : Enterprise-wide deployment
 ```
-
----
-
-## 📅 Competition Timeline
-
-| Activity | Date |
-|----------|------|
-| Registration | 27 April - 22 May 2026 |
-| **Submission** | **25 - 29 May 2026** |
-| Winner Announcement | Minggu Pertamina June 2026 |
-
 ---
 
 ## Author
