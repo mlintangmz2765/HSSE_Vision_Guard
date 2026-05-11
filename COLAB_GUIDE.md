@@ -140,13 +140,7 @@ Setelah berhasil:
 2. ✅ Bisa navigasi antar modul (Dashboard, APD Detector, dll)
 3. ✅ Bisa upload gambar untuk deteksi APD
 4. ✅ Safety Dashboard menampilkan grafik interaktif
-5. ✅ Risk Predictor menghitung skor risiko
-
----
-
-## VIDEO TUTORIAL
-
-[Link video tutorial akan ditambahkan]
+5. ✅ Risk Predictor menghitung skor risikos
 
 ---
 
