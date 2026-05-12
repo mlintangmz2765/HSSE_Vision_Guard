@@ -410,23 +410,22 @@ from app import load_yolo_model
     col1, col2 = st.columns(2)
     with col1:
         st.markdown("""
-        **Model:** YOLOv8 Nano
+        **Model:** YOLOv8 Nano (Pretrained COCO)
         **Framework:** Ultralytics
         **Mode:** CPU (Google Colab)
-        **Detection Classes:** Person
+        **Detection Classes:** Person (COCO)
         **Confidence Threshold:** 50%
         """)
     with col2:
         st.markdown("""
-        **Akurasi:** 82.1% mAP
+        **Baseline mAP:** 82.1% (referensi Petropoulos dkk., 2025)
+        **Prototype Detection:** Person class (COCO pretrained)
         **Speed:** ~30 FPS (CPU)
-        **Input Size:** 640x640
-        **Pretrained:** COCO Dataset
+        **Input Size:** 640×640
         """)
 
     st.markdown("---")
-    st.info("💡 **Untuk akurasi lebih tinggi**, model perlu dilatih dengan dataset khusus APD (helm, rompi, harness). "
-            "Model saat ini menggunakan pretrained COCO untuk demonstrasi.")
+    st.info("💡 **Catatan Penting:** Angka mAP 82.1% merupakan *baseline literatur* dari pengujian Petropoulos dkk. (2025) dengan dataset APD khusus. Prototipe ini adalah *proof-of-concept* yang menggunakan pretrained COCO (class: Person). Untuk deteksi APD spesifik (helm, rompi, harness), diperlukan fine-tuning dengan dataset berlabel khusus pekerja energi Indonesia.")
 
 
 # =============================================================================
@@ -705,7 +704,7 @@ elif "Documentation" in page:
     st.markdown("""
     Penelitian menggunakan pendekatan Research & Development dengan komponen utama:
 
-    1. **Literature Review** - Studi literatur dari 11 jurnal internasional bereputasi
+    1. **Literature Review** - Studi literatur dari 18 referensi internasional
     2. **Prototype Development** - Pembuatan prototipe sistem menggunakan Python + Streamlit
     3. **System Design** - Perancangan arsitektur 4-layer terintegrasi
     4. **Testing & Evaluation** - Pengujian modul deteksi APD dan simulasi UAV
